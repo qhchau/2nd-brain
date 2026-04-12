@@ -1079,8 +1079,8 @@ function generatePackage() {
 
   // Path tokens per version
   const paths = version === 'pasa' ? {
-    '<WIKI_INDEX>':       'wiki-system-index.md',
-    '<WIKI_LOG>':         'wiki-system-log.md',
+    '<WIKI_INDEX>':       'wiki-INDEX.md',
+    '<WIKI_LOG>':         'wiki-LOG.md',
     '<WIKI_PAGE_PREFIX>': 'wiki-',
     '<WIKI_PAGES_LOC>':   'all wiki-*.md files at root level',
   } : {
@@ -1119,8 +1119,8 @@ function generatePackage() {
   zip.folder('raw');
 
   if (version === 'pasa') {
-    zip.file('wiki-system-index.md', indexMd);
-    zip.file('wiki-system-log.md', logMd);
+    zip.file('wiki-INDEX.md', indexMd);
+    zip.file('wiki-LOG.md', logMd);
   } else {
     const sys = zip.folder('wiki').folder('.system');
     sys.file('index.md', indexMd);
