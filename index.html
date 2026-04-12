@@ -1119,8 +1119,7 @@ function generatePackage() {
   zip.folder('raw');
 
   if (version === 'pasa') {
-    zip.file('wiki-INDEX.md', indexMd);
-    zip.file('wiki-LOG.md', logMd);
+    // No pre-built index/log — CLAUDE.md instructs Claude to create them on first ingest
   } else {
     const sys = zip.folder('wiki').folder('.system');
     sys.file('index.md', indexMd);
