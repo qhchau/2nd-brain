@@ -31,10 +31,10 @@
 
     /* ── SCALE WRAPPER ── */
     #page-wrap {
-      transform: scale(1.5);
+      transform: scale(1.2);
       transform-origin: 0 0;
-      width: calc(100vw / 1.5);
-      height: calc(100vh / 1.5);
+      width: calc(100vw / 1.2);
+      height: calc(100vh / 1.2);
       overflow-y: auto;
       overflow-x: hidden;
       scrollbar-width: thin;
@@ -261,7 +261,7 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      min-height: calc(100vh / 1.5 - 82px);
+      min-height: calc(100vh / 1.2 - 82px);
       padding: 40px 28px 60px;
       animation: fadeUp 0.5s ease 0.05s both;
     }
@@ -285,6 +285,9 @@
       line-height: 1.6; max-width: 420px;
       margin-bottom: 36px;
     }
+    .hero-dl-btns {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    }
     .hero-dl-btn {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 13px 30px;
@@ -296,6 +299,8 @@
       transition: background 0.15s;
     }
     .hero-dl-btn:hover { background: #005c8f; }
+    .hero-dl-btn.pasa-btn { background: var(--teal); }
+    .hero-dl-btn.pasa-btn:hover { background: #005e47; }
     .hero-meta {
       margin-top: 18px;
       font-family: 'Rajdhani', sans-serif;
@@ -510,10 +515,16 @@
       <div class="hero-eyebrow">PASA ME Group &nbsp;—&nbsp; First Time Setup</div>
       <h1 class="hero-title">Set Up Your<br><em>2nd Brain</em></h1>
       <p class="hero-sub">Your personal AI knowledge base, pre-configured for PASA workflows. Download takes 30 seconds.</p>
-      <button class="hero-dl-btn" onclick="openInstallModal()">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11.5L3 6.5h3.5V1h3v5.5H13L8 11.5z"/><rect x="2" y="13" width="12" height="2" rx="1"/></svg>
-        DOWNLOAD SETUP PACKAGE
-      </button>
+      <div class="hero-dl-btns">
+        <button class="hero-dl-btn" onclick="openInstallModal('cli')">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11.5L3 6.5h3.5V1h3v5.5H13L8 11.5z"/><rect x="2" y="13" width="12" height="2" rx="1"/></svg>
+          CLAUDE CODE CLI
+        </button>
+        <button class="hero-dl-btn pasa-btn" onclick="openInstallModal('pasa')">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11.5L3 6.5h3.5V1h3v5.5H13L8 11.5z"/><rect x="2" y="13" width="12" height="2" rx="1"/></svg>
+          PASA AI
+        </button>
+      </div>
       <div class="hero-meta">Save the ZIP directly into your <code>OneDrive - Panasonic Automotive Systems</code> folder so it syncs automatically.</div>
     </div>
   </div>
@@ -676,48 +687,19 @@
       <div class="step-body">
         <div class="step-tag">STEP 02 / MORNING</div>
         <h2 class="step-title">GATHER BRIEF WITH <em>COPILOT</em></h2>
-        <p class="step-desc">Run the two prompts below in Microsoft 365 Copilot. Yesterday and today's dates are already filled in for you.</p>
-
-        <div class="date-banner">
-          <div class="date-chip">
-            <span class="date-chip-label">YESTERDAY</span>
-            <span class="date-chip-val yday" id="displayYesterday">—</span>
-          </div>
-          <div class="date-chip">
-            <span class="date-chip-label">TODAY</span>
-            <span class="date-chip-val" id="displayToday">—</span>
-          </div>
-          <span class="date-note">Auto-computed — dates are already inserted in the prompts below</span>
-        </div>
+        <p class="step-desc">Run this prompt in Microsoft 365 Copilot to scan your Teams and Outlook messages.</p>
 
         <div class="prompt-grid">
-          <!-- Prompt 1: Teams -->
+          <!-- Prompt: Daily Scan (Teams + Outlook merged) -->
           <div class="prompt-card">
             <div class="prompt-header">
               <div class="prompt-header-left">
-                <span class="prompt-badge teams">TEAMS</span>
-                <span class="prompt-title">PROMPT 01 / Teams Scan</span>
+                <span class="prompt-badge teams">TEAMS + OUTLOOK</span>
+                <span class="prompt-title">DAILY SCAN</span>
               </div>
-              <button class="copy-btn" id="copyBtn1" onclick="copyPrompt(1)">COPY PROMPT</button>
+              <button class="copy-btn" id="copyBtnDaily" onclick="copyDailyPrompt()">COPY PROMPT</button>
             </div>
-            <pre class="prompt-body" id="prompt1Display"></pre>
-            <div class="screenshot-placeholder">
-              <div class="ss-icon-wrap"><div class="ss-icon"></div></div>
-              <div class="ss-label">INSERT SCREENSHOT HERE</div>
-              <div class="ss-note">Show where to paste this prompt in Microsoft 365 Copilot</div>
-            </div>
-          </div>
-
-          <!-- Prompt 2: Email -->
-          <div class="prompt-card">
-            <div class="prompt-header">
-              <div class="prompt-header-left">
-                <span class="prompt-badge">EMAIL</span>
-                <span class="prompt-title">PROMPT 02 / Email Scan</span>
-              </div>
-              <button class="copy-btn" id="copyBtn2" onclick="copyPrompt(2)">COPY PROMPT</button>
-            </div>
-            <pre class="prompt-body" id="prompt2Display"></pre>
+            <pre class="prompt-body" id="promptDailyDisplay"></pre>
             <div class="screenshot-placeholder">
               <div class="ss-icon-wrap"><div class="ss-icon"></div></div>
               <div class="ss-label">INSERT SCREENSHOT HERE</div>
@@ -751,8 +733,7 @@
 
         <div class="cmd-section-label">FILENAME CONVENTION</div>
         <div class="filename-row">
-          <div class="filename-chip" id="fname1">YYYY-MM-DD_&lt;username&gt;_teams-scan.md</div>
-          <div class="filename-chip" id="fname2">YYYY-MM-DD_&lt;username&gt;_email-scan.md</div>
+          <div class="filename-chip" id="fname1">YYYY-MM-DD_&lt;username&gt;_daily-scan.md</div>
         </div>
       </div>
     </div>
@@ -766,69 +747,16 @@
       <div class="step-body">
         <div class="step-tag">STEP 04 / INGEST</div>
         <h2 class="step-title">LOAD INTO AI &amp; <em>START ASKING</em></h2>
-        <p class="step-desc">Choose your AI tool. Ingest the new files, then ask questions freely throughout the day.</p>
+        <p class="step-desc">Open your AI (PASA AI or Claude Code) from your 2nd-brain folder, then run the ingest command.</p>
 
-        <div class="ai-cards">
-          <!-- PASA AI -->
-          <div class="ai-card pasa-ai">
-            <div class="ai-card-header">
-              <div class="ai-card-name"><em>PASA AI</em> Platform</div>
-              <div class="ai-card-sub">Microsoft Enterprise AI</div>
-            </div>
-            <div class="ai-card-body">
-              <div class="ai-step-block">
-                <div class="ai-step-label" data-num="01 /">MOUNT DATA SOURCE</div>
-                <div class="cmd-row" style="flex-wrap:wrap;">
-                  <span class="cmd-text" style="font-size:11px;">C:\Users\<span class="uname dim" data-role="uname" style="color:var(--white);">&lt;username&gt;</span>\OneDrive - Panasonic Automotive Systems\2nd-brain\raw</span>
-                  <button class="copy-btn" id="copyMountPasa" onclick="copyPath('copyMountPasa')">COPY</button>
-                </div>
-              </div>
-              <div class="ai-step-block">
-                <div class="ai-step-label" data-num="02 /">INGEST COMMAND</div>
-                <div class="cmd-row">
-                  <span class="cmd-text">ingest what's new in the raw folder</span>
-                  <button class="copy-btn" id="copyIngestPasa" onclick="copyStatic('copyIngestPasa', `ingest what's new in the raw folder`)">COPY</button>
-                </div>
-              </div>
-              <div class="ai-step-block">
-                <div class="ai-step-label" data-num="03 /">END OF DAY — CLEANUP</div>
-                <div class="cmd-row">
-                  <span class="cmd-text" style="color:var(--teal);">lint the wiki to clean up</span>
-                  <button class="copy-btn" id="copyLintPasa" onclick="copyStatic('copyLintPasa', 'lint the wiki to clean up')">COPY</button>
-                </div>
-              </div>
-              <div class="after-note">
-                <div class="after-note-text">After ingestion, <strong>ask anything</strong> — project status, action items, decisions, who owns what.</div>
-              </div>
-            </div>
-          </div>
+        <div class="cmd-section-label" style="margin-bottom:8px;">INGEST COMMAND</div>
+        <div class="cmd-row" style="margin-bottom:18px;">
+          <span class="cmd-text">ingest what's new in the raw folder</span>
+          <button class="copy-btn" id="copyIngest" onclick="copyStatic('copyIngest', `ingest what's new in the raw folder`)">COPY</button>
+        </div>
 
-          <!-- Claude Code -->
-          <div class="ai-card cc">
-            <div class="ai-card-header">
-              <div class="ai-card-name"><em>Claude Code</em></div>
-              <div class="ai-card-sub">Anthropic CLI — local terminal</div>
-            </div>
-            <div class="ai-card-body">
-              <div class="ai-step-block">
-                <div class="ai-step-label" data-num="01 /">INGEST COMMAND (full path)</div>
-                <div class="cmd-row" style="flex-wrap:wrap;">
-                  <span class="cmd-text" style="font-size:11px;">For 2nd brain at C:\Users\<span class="uname dim" data-role="uname" style="color:var(--white);">&lt;username&gt;</span>\OneDrive - Panasonic Automotive Systems\2nd-brain\raw — ingest what's new in the raw folder</span>
-                  <button class="copy-btn" id="copyCCIngest" onclick="doCopyCCIngest()">COPY</button>
-                </div>
-              </div>
-              <div class="ai-step-block">
-                <div class="ai-step-label" data-num="02 /">END OF DAY — CLEANUP</div>
-                <div class="cmd-row">
-                  <span class="cmd-text" style="color:var(--teal);">lint the wiki to clean up</span>
-                  <button class="copy-btn" id="copyLintCC" onclick="copyStatic('copyLintCC', 'lint the wiki to clean up')">COPY</button>
-                </div>
-              </div>
-              <div class="after-note">
-                <div class="after-note-text">After ingestion, <strong>ask anything</strong> — project status, action items, decisions, who owns what.</div>
-              </div>
-            </div>
-          </div>
+        <div class="after-note">
+          <div class="after-note-text">After ingestion, <strong>ask anything</strong> — project status, action items, decisions, who owns what.</div>
         </div>
       </div>
     </div>
@@ -869,7 +797,7 @@
 
     <div class="modal-hdr">
       <div>
-        <div class="modal-hdr-title">Configure Your Package</div>
+        <div class="modal-hdr-title">Configure Your Package — <span id="modalVersionLabel">Claude Code CLI</span></div>
         <div class="modal-hdr-sub">Fill in your profile — takes 30 seconds</div>
       </div>
       <button class="modal-close-btn" onclick="closeInstallModal()">✕</button>
@@ -938,167 +866,6 @@
 
 </div><!-- end #page-wrap -->
 
-<!-- CLAUDE.md template — read by generatePackage(), not executed -->
-<script type="text/plain" id="claude-md-tpl">
-# 2nd Brain — Schema & Conventions
-
-## Who I Am
-
-You are the maintainer of <username> aka <Full-Name>'s 2nd brain wiki. <Full-Name> is an <role> at Panasonic Automotive Systems, working in <>
-
-**Key clients:** : <clients>
-**Key supplier/vendor**: <vendor>
-**Key tools**: <tools>
-**Domain of expertise:** <DOP>
-
----
-
-## Folder Rules
-
-- `raw/` — immutable source files. Read / delete only. Never modify the content.
-- `wiki/` — you own this entirely. <Full-Name> reads it; you write and maintain it.
-- `wiki/.system/index.md` — catalog of all wiki pages. Update on every ingest.
-- `wiki/.system/log.md` — append-only history. Append an entry before every operation.
-- `CLAUDE.md` — this file. Co-evolved by <Full-Name> and Claude.
-
----
-
-## Ingest Workflow
-
-Triggered by: `ingest <path-to-source>` or `ingest all the new files` (check the log to see what are the new files)
-
-Steps (execute autonomously, no confirmation needed):
-
-1. Read the source file in full.
-2. Identify all entities: projects, people, clients, tools/software, concepts, decisions, open action items.
-3. **Before creating any pages**, append a placeholder entry to `wiki/.system/log.md`:
-   ```
-   ## [YYYY-MM-DD] ingest | <source filename> — IN PROGRESS
-   - Pages created: TBD
-   - Pages updated: TBD
-   ```
-   This acts as a lock. Even if the ingest is interrupted, the log records that the file was being processed.
-4. For each entity:
-   - If no wiki page exists: create `wiki/<entity-slug>.md`
-   - If a page exists: update it with new information; flag any contradictions (see Contradiction Notation below)
-5. Update `wiki/.system/index.md` — add an entry for every new page. Do not remove existing entries.
-6. Edit the placeholder log entry (from step 3) to replace `— IN PROGRESS` and fill in the actual pages:
-   ```
-   ## [YYYY-MM-DD] ingest | <source filename>
-   - Pages created: <comma-separated list, or "none">
-   - Pages updated: <comma-separated list, or "none">
-   ```
-7. Subfolder rule: create a subfolder only when 3+ pages share a clear category (e.g. `clients/` once Nissan, Toyota, GM each have their own page). When you move pages into a subfolder, update all cross-links and the index.
-8. Summarize the ingested file for the user to know
-
----
-
-## Query Workflow
-
-Triggered by any question about the wiki content.
-
-1. Read `wiki/.system/index.md` to identify relevant pages.
-2. Read those pages.
-3. Synthesize an answer with citations (e.g. "per [nissan-subamp-project.md](wiki/nissan-subamp-project.md)...").
-4. If the answer represents accumulated insight worth keeping (a synthesis, comparison, or analysis that took real reasoning), offer to file it as a new wiki page.
-
-Append to `wiki/.system/log.md`:
-```
-## [YYYY-MM-DD] query | <short description of question>
-- Pages read: <list>
-- Answer filed: <page name, or "no">
-```
-
----
-
-## Lint Workflow
-
-Triggered by: `lint the wiki` or any similar trigger, confirm with user before lint
-
-1. Read all pages in `wiki/`.
-2. Check for:
-   - Contradictions between pages
-   - Stale claims that newer sources have superseded
-   - Orphan pages with no inbound links from other wiki pages
-   - Concepts mentioned inline but lacking their own dedicated page
-   - Missing cross-links between obviously related pages
-   - **Log coverage:** any wiki page whose `source_count > 0` should correspond to at least one log entry in `wiki/.system/log.md`. Flag pages where no matching log entry exists (indicates an ingest happened without logging).
-   - **Stale IN PROGRESS entries:** any log entry still marked `— IN PROGRESS` indicates an interrupted ingest. Flag these for review.
-3. Report findings as a numbered list with specific page references.
-4. Ask <Full-Name> before making any changes.
-
-Append to `wiki/.system/log.md`:
-```
-## [YYYY-MM-DD] lint
-- Issues found: <N>
-- Issues fixed: <N>
-```
-
----
-
-## Page Conventions
-
-### Naming
-`kebab-case.md`
-Examples: `nissan-subamp-project.md`, `ansys-icepak.md`, `ross-hanson.md`, `teamcenter-outage-2026-04-08.md`
-
-### Frontmatter
-Every page starts with YAML frontmatter:
-```yaml
----
-type: project | person | client | vendor | concept | decision | tool | event
-tags: [tag1, tag2]
-source_count: N
-last_updated: YYYY-MM-DD
----
-```
-
-### Cross-links
-Use standard markdown links — not Obsidian wikilinks:
-```markdown
-[Nissan SubAmp Project](nissan-subamp-project.md)
-[Ross Hanson](ross-hanson.md)
-```
-If the page is in a subfolder: `[Nissan SubAmp Project](clients/nissan-subamp-project.md)`
-
-### Contradiction notation
-When a new source contradicts existing content on a page, add inline:
-```
-> ⚠️ Contradicts [raw/daily-brief/2026-04-08_email-scan.md, 2026-04-08]: previous claim was X; new source says Y. Not yet resolved.
-```
-
----
-
-## Index Format
-
-`wiki/.system/index.md` is organized by category. Categories appear as pages accumulate — add a category heading when you have 2+ pages of the same type.
-
-Each entry:
-```markdown
-- [Page Title](path/to/page.md) — one-line summary | tags: tag1, tag2 | sources: N
-```
-
-Example:
-```markdown
-## Projects
-- [Nissan SubAmp Thermal Simulation](nissan-subamp-project.md) — thermal model for SubAmp assembly, delivery target Apr 8 | tags: nissan, thermal, ansys | sources: 2
-
-## People
-- [Ross Hanson](ross-hanson.md) — thermal simulation colleague, works on SubAmp and other Nissan projects | tags: colleague | sources: 3
-```
-
----
-
-## Log Format
-
-Each entry starts with a greppable prefix:
-```
-## [YYYY-MM-DD] <operation> | <title>
-```
-
-This means `grep "^## \[" wiki/.system/log.md | tail -10` gives the last 10 operations.
-</script>
-
 <script>
 // ── DATES ──────────────────────────────────────────────────────
 const _now  = new Date();
@@ -1115,8 +882,8 @@ function fmt(d) {
 const todayStr     = fmt(_now);
 const yesterdayStr = fmt(_yest);
 
-// ── PROMPT TEMPLATES ───────────────────────────────────────────
-const PROMPT_TEAMS = `Scan my Teams messages from 9AM ${yesterdayStr} to 9AM ${todayStr}. Include sent messages and full thread history — read to the END of every thread before classifying anything.
+// ── PROMPT TEMPLATE ────────────────────────────────────────────
+const PROMPT_DAILY = `Scan my Teams + Outlook messages from yesterday 9AM to today 9AM. Include sent messages and full thread history — read to the END of every thread before classifying anything.
 
 SCAN WITH THESE LENSES:
 1. Deadlines & commitments
@@ -1127,18 +894,18 @@ SCAN WITH THESE LENSES:
 
 VERIFY BEFORE CLASSIFYING:
 - Read the final message of every thread. State: "Last message: [sender] at [time]"
-- If my last message closes the ask → 🟢 Concluded, not 🔴
-- Resolved signals: I sent a reply after the ask, I reacted ✅/👍, someone acknowledged my response
+- If my last message or email closes the ask → 🟢 Concluded, not 🔴
+- Resolved signals: I replied after the ask, I reacted ✅/👍, someone acknowledged my response
 - If thread is truncated → mark (verify manually), never assume open
 - If info conflicts within a thread → flag ⚠️ CONFLICTING
 
-OUTPUT — save as: ${todayStr}_teams-scan.md
+OUTPUT — save as: YYYY-MM-DD_<username>_daily-scan.md
 
-# Teams Scan — ${todayStr}
-_9AM ${yesterdayStr} → 9AM ${todayStr}_
+# Daily Scan — YYYY-MM-DD
+_9AM yesterday → 9AM today_
 
 ## 🔴 Needs action today
-| Item | Thread | Link | Due |
+| Item | Source | Link | Due |
 |------|--------|------|-----|
 
 ## 🟡 Pending — waiting on others
@@ -1156,61 +923,32 @@ _9AM ${yesterdayStr} → 9AM ${todayStr}_
 - bullet list
 
 RULES:
-- Every row needs a direct Teams link
+- Every row needs a direct link (Teams or Outlook)
 - One line per row, no prose in tables
 - Flag uncertainty as (unverified), never omit or guess`;
 
-const PROMPT_EMAIL = `Scan my Outlook inbox AND sent items from 9AM ${yesterdayStr} to 9AM ${todayStr}. Read to the END of every thread before classifying anything.
-
-SCAN WITH THESE LENSES:
-1. Deadlines & commitments
-2. Open questions / threads needing my reply
-3. Action items directed at me
-4. Decisions already made
-5. Context to remember (project updates, stakeholder positions, links)
-
-VERIFY BEFORE CLASSIFYING:
-- Read the final message of every thread. State: "Last message: [sender] at [time]"
-- If my last sent email closes the ask → 🟢 Concluded, not 🔴
-- Resolved signals: I replied after the ask, someone acknowledged my response, meeting scheduled as outcome
-- If thread is truncated → mark (verify manually), never assume open
-- If info conflicts within a thread → flag ⚠️ CONFLICTING
-
-OUTPUT — save as: ${todayStr}_email-scan.md
-
-# Email Scan — ${todayStr}
-_9AM ${yesterdayStr} → 9AM ${todayStr}_
-
-## 🔴 Needs action today
-| Item | From | Link | Due |
-|------|------|------|-----|
-
-## 🟡 Pending — waiting on others
-| Item | Who | Link | Since |
-|------|-----|------|-------|
-
-## 🟢 Concluded
-| Item | How resolved | Link |
-|------|-------------|------|
-
-## 📌 Context
-- bullet list
-
-## ⚠️ Conflicting / unclear
-- bullet list
-
-RULES:
-- Every row needs a direct Outlook link
-- One line per row, no prose in tables
-- Flag uncertainty as (unverified), never omit or guess`;
+// ── TEMPLATE FETCH ─────────────────────────────────────────────
+async function loadTemplates() {
+  const v = Date.now();
+  try {
+    const [common, cli, pasa] = await Promise.all([
+      fetch(`templates/Claude_common.md?v=${v}`).then(r => r.text()),
+      fetch(`templates/Claude_cli.md?v=${v}`).then(r => r.text()),
+      fetch(`templates/Claude_pasa.md?v=${v}`).then(r => r.text()),
+    ]);
+    window._tplCommon = common;
+    window._tplCli   = cli;
+    window._tplPasa  = pasa;
+  } catch(e) {
+    console.warn('Template fetch failed:', e);
+  }
+}
+loadTemplates();
 
 // ── INIT ───────────────────────────────────────────────────────
 (function init() {
-  document.getElementById('topDate').textContent          = todayStr;
-  document.getElementById('displayToday').textContent     = todayStr;
-  document.getElementById('displayYesterday').textContent = yesterdayStr;
-  document.getElementById('prompt1Display').textContent   = PROMPT_TEAMS;
-  document.getElementById('prompt2Display').textContent   = PROMPT_EMAIL;
+  document.getElementById('topDate').textContent        = todayStr;
+  document.getElementById('promptDailyDisplay').textContent = PROMPT_DAILY;
   updateFilenames('');
 })();
 
@@ -1239,8 +977,7 @@ function getPath() {
 
 function updateFilenames(uname) {
   const u = uname || '\u003cusername\u003e';
-  document.getElementById('fname1').textContent = `${todayStr}_${u}_teams-scan.md`;
-  document.getElementById('fname2').textContent = `${todayStr}_${u}_email-scan.md`;
+  document.getElementById('fname1').textContent = `${todayStr}_${u}_daily-scan.md`;
 }
 
 // ── COPY HELPERS ───────────────────────────────────────────────
@@ -1276,8 +1013,8 @@ function fallbackCopy(text, btnId) {
   flashBtn(btnId);
 }
 
-function copyPrompt(n) {
-  doCopy(n === 1 ? PROMPT_TEAMS : PROMPT_EMAIL, 'copyBtn' + n);
+function copyDailyPrompt() {
+  doCopy(PROMPT_DAILY, 'copyBtnDaily');
 }
 
 function copyPath(btnId) {
@@ -1288,14 +1025,13 @@ function copyStatic(btnId, text) {
   doCopy(text, btnId);
 }
 
-function doCopyCCIngest() {
-  const u = getUsername() || '<username>';
-  const cmd = `For 2nd brain at C:\\Users\\${u}\\OneDrive - Panasonic Automotive Systems\\2nd-brain\\raw — ingest what's new in the raw folder`;
-  doCopy(cmd, 'copyCCIngest');
-}
-
 // ── MODAL ──────────────────────────────────────────────────────
-function openInstallModal() {
+let _currentVersion = 'cli';
+
+function openInstallModal(version) {
+  _currentVersion = version || 'cli';
+  document.getElementById('modalVersionLabel').textContent =
+    version === 'pasa' ? 'PASA AI' : 'Claude Code CLI';
   document.getElementById('page-wrap').scrollTop = 0;
   document.getElementById('installModal').classList.add('open');
 }
@@ -1332,8 +1068,32 @@ function generatePackage() {
   const customers = document.getElementById('installCustomers').value.trim() || '<clients>';
   const expertise = document.getElementById('installExpertise').value.trim() || '<DOP>';
 
-  // Fill CLAUDE.md template
-  let claudeMd = document.getElementById('claude-md-tpl').textContent.trim();
+  const version  = _currentVersion;
+  const specific = version === 'pasa' ? window._tplPasa : window._tplCli;
+  const common   = window._tplCommon;
+
+  if (!specific || !common) {
+    alert('Templates still loading — please try again in a moment.');
+    return;
+  }
+
+  // Path tokens per version
+  const paths = version === 'pasa' ? {
+    '<WIKI_INDEX>':       'wiki-system-index.md',
+    '<WIKI_LOG>':         'wiki-system-log.md',
+    '<WIKI_PAGE_PREFIX>': 'wiki-',
+    '<WIKI_PAGES_LOC>':   'all wiki-*.md files at root level',
+  } : {
+    '<WIKI_INDEX>':       'wiki/.system/index.md',
+    '<WIKI_LOG>':         'wiki/.system/log.md',
+    '<WIKI_PAGE_PREFIX>': 'wiki/',
+    '<WIKI_PAGES_LOC>':   'wiki/',
+  };
+
+  // Build CLAUDE.md: version-specific first, common after
+  let claudeMd = specific + '\n\n' + common;
+
+  // Substitute user fields
   claudeMd = claudeMd.split('<Full-Name>').join(fullName);
   claudeMd = claudeMd.split('<username>').join(username);
   claudeMd = claudeMd.split('<role>').join(role);
@@ -1341,6 +1101,11 @@ function generatePackage() {
   claudeMd = claudeMd.split('<vendor>').join(vendors);
   claudeMd = claudeMd.split('<clients>').join(customers);
   claudeMd = claudeMd.split('<DOP>').join(expertise);
+
+  // Substitute path tokens
+  for (const [token, val] of Object.entries(paths)) {
+    claudeMd = claudeMd.split(token).join(val);
+  }
 
   const indexMd = `# Wiki Index\n\n_No pages yet. Run your first ingest to populate this index._\n`;
   const logMd   = `# Operations Log\n\n_No operations yet. Updated automatically on each ingest, query, and lint._\n`;
@@ -1352,9 +1117,15 @@ function generatePackage() {
   const zip = new JSZip();
   zip.file('CLAUDE.md', claudeMd);
   zip.folder('raw');
-  const sys = zip.folder('wiki').folder('.system');
-  sys.file('index.md', indexMd);
-  sys.file('log.md', logMd);
+
+  if (version === 'pasa') {
+    zip.file('wiki-system-index.md', indexMd);
+    zip.file('wiki-system-log.md', logMd);
+  } else {
+    const sys = zip.folder('wiki').folder('.system');
+    sys.file('index.md', indexMd);
+    sys.file('log.md', logMd);
+  }
 
   zip.generateAsync({ type: 'blob' }).then(blob => {
     const url = URL.createObjectURL(blob);
@@ -1367,12 +1138,18 @@ function generatePackage() {
     URL.revokeObjectURL(url);
     closeInstallModal();
 
-    // Silent adoption log
+    // Silent adoption tracker — Google Forms
     try {
-      const key  = 'pasa_installs';
-      const log  = JSON.parse(localStorage.getItem(key) || '[]');
-      log.push({ username, timestamp: new Date().toISOString() });
-      localStorage.setItem(key, JSON.stringify(log));
+      fetch('https://docs.google.com/forms/d/e/1FAIpQLScXgLwtgWsSo-dn9cH3nosZiFOJOmVizE0jc3GuFjt2ZjMvjg/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'entry.1562943540': username,
+          'entry.1563899072': version,
+          'entry.1645247087': new Date().toISOString()
+        })
+      });
     } catch(e) {}
 
     setTimeout(() => {
