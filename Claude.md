@@ -106,7 +106,8 @@ Every page starts with YAML frontmatter:
 ---
 type: project | person | client | vendor | concept | decision | tool | event
 tags: [tag1, tag2]
-source_count: N
+sources: [raw/filename1.md, raw/filename2.md]
+created: YYYY-MM-DD
 last_updated: YYYY-MM-DD
 ---
 ```

@@ -1,3 +1,4 @@
+<!-- upd:2026-04-13 -->
 # File Structure — Claude Code CLI
 
 ## Folder Rules
