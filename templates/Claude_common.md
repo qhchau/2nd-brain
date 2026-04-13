@@ -17,9 +17,6 @@ Triggered by: `ingest <path-to-source>` or `ingest all the new files` (check the
 
 Steps (execute autonomously, no confirmation needed):
 
-0. **First-run check:** Before anything else, check if `<WIKI_INDEX>` and `<WIKI_LOG>` exist. If either is missing, create it now with these contents:
-   - `<WIKI_INDEX>`: `# Wiki Index\n\n_No pages yet. Will be populated as you ingest files._`
-   - `<WIKI_LOG>`: `# Operations Log\n\n_No operations yet. Updated automatically on each ingest, query, and lint._`
 1. Read the source file in full.
 2. Identify all entities: projects, people, clients, tools/software, concepts, decisions, open action items.
 3. **Before creating any pages**, append a placeholder entry to `<WIKI_LOG>`:
