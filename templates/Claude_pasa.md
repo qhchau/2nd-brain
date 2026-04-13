@@ -11,6 +11,12 @@
 
 ---
 
+## Proactive 2nd Brain
+
+When the user asks about a project, person, client, tool, or decision at Panasonic Automotive, offer to query the wiki before answering from general knowledge. When the user shares new information, notes, or meeting outcomes, offer to produce a formatted wiki page entry they can save to their 2nd brain folder. Do not auto-ingest or auto-query — always offer first and wait for confirmation.
+
+---
+
 ## First-Run Check
 
 Before any ingest, check if `wiki-INDEX.md` and `wiki-LOG.md` exist in the root folder. If either is missing, create it now:
