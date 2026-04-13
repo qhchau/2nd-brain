@@ -205,7 +205,10 @@
 
     .tree-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 22px 22px 20px; position: relative; overflow: hidden; animation: fadeUp 0.4s ease 0.06s both; }
     .tree-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--cyan), var(--teal)); }
-    .tree-panel-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--teal); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
+    .tree-panel-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--teal); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+    .tree-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
+    .tvt-btn { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border); background: transparent; color: var(--gray); cursor: pointer; transition: all 0.15s; }
+    .tvt-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,174,239,0.06); }
     .tree-pre { font-family: 'Share Tech Mono', monospace; font-size: 12.5px; color: var(--gray); line-height: 1.9; white-space: pre; overflow-x: auto; }
     .t-root { color: var(--white); font-size: 14px; }
     .t-you { color: var(--teal); }
@@ -542,19 +545,25 @@
       <!-- Tree Panel -->
       <div class="tree-panel">
         <div class="tree-panel-label">DIRECTORY STRUCTURE</div>
-        <pre class="tree-pre"><span class="t-root">2nd-brain/</span>
-<span class="t-comment">├── </span><span style="color:rgba(157,157,157,0.55);">CLAUDE.md       </span><span class="t-comment">← schema, conventions, AI rules</span>
-<span class="t-comment">├── </span><span class="t-you">raw/            </span><span class="t-comment">← YOU write here</span>
-<span class="t-comment">│   ├── </span><span style="color:rgba(157,157,157,0.45);">daily-brief/</span><span class="t-comment">  ← Copilot output</span>
-<span class="t-comment">│   └── </span><span style="color:rgba(157,157,157,0.45);">docs/       </span><span class="t-comment">  ← PDFs, reference docs</span>
-<span class="t-comment">└── </span><span class="t-ai">wiki/           </span><span class="t-comment">← AI maintains this</span>
-<span class="t-comment">    ├── </span><span style="color:rgba(157,157,157,0.35);">.system/    </span><span class="t-comment">  ← index + log</span>
-<span class="t-comment">    ├── </span><span class="t-dir">clients/    </span><span class="t-comment">  ← 4 pages</span>
-<span class="t-comment">    ├── </span><span class="t-dir">projects/   </span><span class="t-comment">  ← 10 pages</span>
-<span class="t-comment">    ├── </span><span class="t-dir">people/     </span><span class="t-comment">  ← 18 pages</span>
-<span class="t-comment">    ├── </span><span class="t-dir">tools/      </span><span class="t-comment">  ← 10 pages</span>
-<span class="t-comment">    ├── </span><span class="t-dir">concepts/   </span><span class="t-comment">  ← 3 pages</span>
-<span class="t-comment">    └── </span><span class="t-dir">events/     </span><span class="t-comment">  ← 1 page</span></pre>
+        <div class="tree-toggle">
+          <button class="tvt-btn active" onclick="setTreeVersion('cli')">CLAUDE CODE CLI</button>
+          <button class="tvt-btn" onclick="setTreeVersion('pasa')">PASA AI</button>
+        </div>
+        <pre class="tree-pre" id="tree-cli"><span class="t-root">2nd-brain/</span>
+<span class="t-comment">├── </span><span style="color:rgba(157,157,157,0.55);">CLAUDE.md           </span><span class="t-comment">← schema, conventions, AI rules</span>
+<span class="t-comment">├── </span><span class="t-you">raw/                </span><span class="t-comment">← YOU write here</span>
+<span class="t-comment">└── </span><span class="t-ai">wiki/               </span><span class="t-comment">← AI maintains this</span>
+<span class="t-comment">    ├── </span><span style="color:rgba(157,157,157,0.35);">.system/        </span><span class="t-comment">  ← index + log</span>
+<span class="t-comment">    ├── </span><span class="t-dir">clients/        </span><span class="t-comment">  ← auto-created</span>
+<span class="t-comment">    ├── </span><span class="t-dir">projects/       </span><span class="t-comment">  ← auto-created</span>
+<span class="t-comment">    ├── </span><span class="t-dir">people/         </span><span class="t-comment">  ← auto-created</span>
+<span class="t-comment">    └── </span><span class="t-dir">...             </span><span class="t-comment">  ← grows as you ingest</span></pre>
+        <pre class="tree-pre" id="tree-pasa" style="display:none"><span class="t-root">2nd-brain/</span>
+<span class="t-comment">├── </span><span style="color:rgba(157,157,157,0.55);">CLAUDE.md           </span><span class="t-comment">← schema, conventions, AI rules</span>
+<span class="t-comment">├── </span><span class="t-you">raw/                </span><span class="t-comment">← YOU write here</span>
+<span class="t-comment">├── </span><span style="color:rgba(157,157,157,0.35);">wiki-INDEX.md       </span><span class="t-comment">← AI maintains this</span>
+<span class="t-comment">├── </span><span style="color:rgba(157,157,157,0.35);">wiki-LOG.md         </span><span class="t-comment">← AI maintains this</span>
+<span class="t-comment">└── </span><span class="t-ai">wiki-&lt;slug&gt;.md      </span><span class="t-comment">← one file per entity, flat</span></pre>
       </div>
 
       <!-- Concept panels -->
@@ -578,59 +587,60 @@
     </div>
 
     <!-- Category cards -->
-    <div class="cat-section-label">WIKI CONTENTS — WHAT'S BEING TRACKED</div>
+    <div class="cat-section-label">WIKI CONTENTS — WHAT GETS TRACKED</div>
     <div class="cat-grid">
       <div class="cat-card">
         <div class="cat-name">CLIENTS</div>
-        <div class="cat-count">4 <span>pages</span></div>
+        <div class="cat-ex" style="font-size:13px;color:var(--gray);margin-bottom:10px;">OEM customers, partners, distributors</div>
         <div class="cat-examples">
-          <div class="cat-ex">Nissan</div>
-          <div class="cat-ex">Toyota</div>
-          <div class="cat-ex">GM, Honda Mitsubishi</div>
+          <div class="cat-ex">Active programs</div>
+          <div class="cat-ex">Key contacts per account</div>
+          <div class="cat-ex">Delivery history</div>
         </div>
       </div>
       <div class="cat-card">
         <div class="cat-name">PROJECTS</div>
-        <div class="cat-count">10 <span>pages</span></div>
+        <div class="cat-ex" style="font-size:13px;color:var(--gray);margin-bottom:10px;">Simulations, tools, integrations</div>
         <div class="cat-examples">
-          <div class="cat-ex">Nissan SubAmp Thermal</div>
-          <div class="cat-ex">Scorecard Generator</div>
-          <div class="cat-ex">APT Tool, DNG Connectors</div>
+          <div class="cat-ex">Status &amp; milestones</div>
+          <div class="cat-ex">Open action items</div>
+          <div class="cat-ex">Decisions &amp; rationale</div>
         </div>
       </div>
       <div class="cat-card">
         <div class="cat-name">PEOPLE</div>
-        <div class="cat-count">18 <span>pages</span></div>
+        <div class="cat-ex" style="font-size:13px;color:var(--gray);margin-bottom:10px;">Colleagues, managers, vendors</div>
         <div class="cat-examples">
-          <div class="cat-ex">Michael Moore</div>
-          <div class="cat-ex">Ross Hanson</div>
-          <div class="cat-ex">Krishna Sunkara + 15 more</div>
+          <div class="cat-ex">Role &amp; responsibilities</div>
+          <div class="cat-ex">Projects they touch</div>
+          <div class="cat-ex">Communication history</div>
         </div>
       </div>
       <div class="cat-card">
         <div class="cat-name">TOOLS</div>
-        <div class="cat-count">10 <span>pages</span></div>
+        <div class="cat-ex" style="font-size:13px;color:var(--gray);margin-bottom:10px;">CAD, simulation, PLM platforms</div>
         <div class="cat-examples">
-          <div class="cat-ex">PASA AI Platform</div>
-          <div class="cat-ex">Ansys Icepak</div>
-          <div class="cat-ex">Teamcenter, nTop</div>
+          <div class="cat-ex">How it's used</div>
+          <div class="cat-ex">Known issues &amp; workarounds</div>
+          <div class="cat-ex">Related projects</div>
         </div>
       </div>
       <div class="cat-card">
         <div class="cat-name">CONCEPTS</div>
-        <div class="cat-count">3 <span>pages</span></div>
+        <div class="cat-ex" style="font-size:13px;color:var(--gray);margin-bottom:10px;">Workflows, methods, standards</div>
         <div class="cat-examples">
-          <div class="cat-ex">AI Skill Extraction</div>
-          <div class="cat-ex">PASA Deployment Zones</div>
-          <div class="cat-ex">AI Adoption Group</div>
+          <div class="cat-ex">Process definitions</div>
+          <div class="cat-ex">Best practices</div>
+          <div class="cat-ex">Cross-linked to projects</div>
         </div>
       </div>
       <div class="cat-card">
         <div class="cat-name">EVENTS</div>
-        <div class="cat-count">1 <span>page</span></div>
+        <div class="cat-ex" style="font-size:13px;color:var(--gray);margin-bottom:10px;">Outages, reviews, kickoffs</div>
         <div class="cat-examples">
-          <div class="cat-ex">Teamcenter Outage</div>
-          <div class="cat-ex">2026-04-08</div>
+          <div class="cat-ex">What happened</div>
+          <div class="cat-ex">Impact &amp; resolution</div>
+          <div class="cat-ex">Date-stamped record</div>
         </div>
       </div>
     </div>
@@ -643,7 +653,7 @@
         <div class="rule-val"><strong>You write, AI reads.</strong> Never delete source files. Everything the AI knows traces back here — it's your audit trail.</div>
       </div>
       <div class="rule-row">
-        <div class="rule-key">wiki/</div>
+        <div class="rule-key">wiki pages</div>
         <div class="rule-val"><strong>AI writes, you read.</strong> Don't manually edit these pages — they'll be overwritten on the next ingest.</div>
       </div>
       <div class="rule-row">
@@ -1027,6 +1037,12 @@ function copyStatic(btnId, text) {
 
 // ── MODAL ──────────────────────────────────────────────────────
 let _currentVersion = 'cli';
+
+function setTreeVersion(v) {
+  document.getElementById('tree-cli').style.display  = v === 'cli'  ? '' : 'none';
+  document.getElementById('tree-pasa').style.display = v === 'pasa' ? '' : 'none';
+  document.querySelectorAll('.tvt-btn').forEach((b, i) => b.classList.toggle('active', (i === 0) === (v === 'cli')));
+}
 
 function openInstallModal(version) {
   _currentVersion = version || 'cli';
