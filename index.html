@@ -528,7 +528,7 @@
     <span class="tab-num">02 /</span> 2ND BRAIN STRUCTURE
   </button>
   <button class="tab-btn" id="tabBtn2" onclick="switchTab(2)">
-    <span class="tab-num">03 /</span> DAILY COMMANDS
+    <span class="tab-num">03 /</span> HELPFUL TIPS
   </button>
 </nav>
 
@@ -972,22 +972,16 @@ VERIFY BEFORE CLASSIFYING:
 - If thread is truncated → mark (verify manually), never assume open
 - If info conflicts within a thread → flag ⚠️ CONFLICTING
 
-OUTPUT — save as: YYYY-MM-DD_<username>_daily-scan.md
+OUTPUT — save as: YYYY-MM-DD_daily-Outlook_Teams_scan.md (this have to be a downloadable link)
 
 # Daily Scan — YYYY-MM-DD
-_9AM yesterday → 9AM today_
+9AM yesterday → 9AM today
 
 ## 🔴 Needs action today
-| Item | Source | Link | Due |
-|------|--------|------|-----|
 
 ## 🟡 Pending — waiting on others
-| Item | Who | Link | Since |
-|------|-----|------|-------|
 
 ## 🟢 Concluded
-| Item | How resolved | Link |
-|------|-------------|------|
 
 ## 📌 Context
 - bullet list
@@ -996,9 +990,10 @@ _9AM yesterday → 9AM today_
 - bullet list
 
 RULES:
-- Every row needs a direct link (Teams or Outlook)
+- Always tell me what's your assumed Yesterday and Today is
 - One line per row, no prose in tables
-- Flag uncertainty as (unverified), never omit or guess`;
+- Flag uncertainty as (unverified), never omit or guess
+- The .md file name has to follow the structure, and also ALWAYS have to be downloadable link`;
 
 // ── TEMPLATE FALLBACKS (used when fetch fails, e.g. file:// protocol) ──────
 window._tplCommon = `<!-- upd:2026-04-13 -->
