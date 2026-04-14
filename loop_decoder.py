@@ -16,6 +16,19 @@ import sys
 import argparse
 from pathlib import Path
 
+# Section names that become H2 headings in meeting-note Loop templates.
+_KNOWN_H2 = {
+    "Agenda", "Meeting notes", "Follow-up tasks",
+    "Decisions", "Open questions", "Goals", "Action items",
+}
+
+# Texts that are UI chrome / framework metadata and should be dropped entirely.
+_SKIP_EXACT = {
+    "AI-generated content in notes may be incorrect.",
+    "AI-generated content in notes may be incorrect. ",
+    "Learn more", "Task", "Bucket", "Due date", "Assigned to", "Planner Task Id",
+}
+
 
 def decompress_all_gzip_blocks(data: bytes) -> list[str]:
     """Find and decompress every gzip block in the binary data."""
@@ -90,11 +103,116 @@ def extract_text_from_blocks(blocks: list[str]) -> tuple[list[str], list[str]]:
 def _is_metadata(text: str) -> bool:
     """Filter out internal framework strings and UI chrome."""
     skip_prefixes = ("__fluid", "/", "http", "%css", "en-us", "ltr", "Plain", "StoryNode")
-    skip_exact = {
-        "Task", "Bucket", "Due date", "Assigned to", "Planner Task Id",
-        "Learn more", "AI-generated content in notes may be incorrect.",
-    }
-    return text.startswith(skip_prefixes) or text in skip_exact
+    return text.startswith(skip_prefixes) or text in _SKIP_EXACT
+
+
+def _is_subheading(text: str) -> bool:
+    """
+    Heuristic: topic sub-headings are short (1–6 words), contain at least one
+    uppercase letter, and have no trailing sentence-ending punctuation.
+    """
+    words = text.split()
+    return (
+        1 <= len(words) <= 6
+        and len(text) < 60
+        and not text.endswith(".")
+        and not text.endswith(",")
+        and not text.endswith("?")
+        and sum(1 for c in text if c.isupper()) >= 1
+    )
+
+
+def extract_text_from_ops_log(blocks: list[str]) -> list[dict]:
+    """
+    Fallback extractor for Loop files where content is stored in the Fluid
+    Framework ops log rather than in snapshot segmentTexts chunks.
+
+    This format appears in newer Loop files.  The ops log is the largest gzip
+    block and contains double-escaped JSON op messages of the form:
+
+        \\"pos1\\":N,\\"seg\\":{\\"text\\":\\"<content>\\",\\"props\\":{...}}
+
+    Returns a list of dicts — [{text, kind}, ...] in ops-log order, which
+    approximates the visual document order.  kind is one of "H2", "H3", "BODY".
+    """
+    # Identify the ops-log block: large, contains sequence numbers + clientId ops.
+    ops_block = None
+    for block in sorted(blocks, key=len, reverse=True):
+        if '"sequenceNumber"' in block and '"clientId"' in block and len(block) > 10000:
+            ops_block = block
+            break
+
+    if ops_block is None:
+        return []
+
+    seg_pattern = re.compile(
+        r'\\"pos1\\":\s*(\d+),\\"seg\\":\s*\{\\"text\\":\s*\\"(.*?)\\",',
+        re.DOTALL,
+    )
+
+    entries = []
+    for m in seg_pattern.finditer(ops_block):
+        text = m.group(2)
+        text = (
+            text
+            .replace('\\"', '"')
+            .replace('\\n', '\n')
+            .replace('\\\\', '\\')
+            .replace('\\u2014', '\u2014')
+            .replace('\\u201c', '\u201c')
+            .replace('\\u201d', '\u201d')
+            .strip()
+        )
+
+        if not text or text in _SKIP_EXACT or _is_metadata(text):
+            continue
+
+        # Classify: check the next 400 chars of context for targetLabel (structural
+        # section anchors inserted by the Loop template engine).
+        ctx = ops_block[m.start(): m.start() + 400]
+        has_target_label = bool(re.search(r'\\"targetLabel\\"', ctx[:300]))
+
+        if text in _KNOWN_H2 or has_target_label:
+            kind = "H2"
+        elif _is_subheading(text):
+            kind = "H3"
+        else:
+            kind = "BODY"
+
+        entries.append({"text": text, "kind": kind})
+
+    return entries
+
+
+def ops_log_to_markdown(entries: list[dict], source_path: Path) -> str:
+    """
+    Convert ops-log entries into structured Markdown.
+
+    H2 entries become ## headings, H3 entries become ### headings, and BODY
+    entries become bullet points.  An AI-accuracy disclaimer is inserted after
+    the "Meeting notes" heading if present.
+    """
+    lines = [f"# {source_path.stem}", ""]
+    ai_note_added = False
+
+    for e in entries:
+        text, kind = e["text"], e["kind"]
+
+        if kind == "H2":
+            lines.append(f"## {text}")
+            lines.append("")
+            if text.lower() == "meeting notes" and not ai_note_added:
+                lines.append("*AI-generated content — may be inaccurate.*")
+                lines.append("")
+                ai_note_added = True
+        elif kind == "H3":
+            lines.append(f"### {text}")
+            lines.append("")
+        else:
+            lines.append(f"- {text}")
+
+    lines.append("")
+    return "\n".join(lines) + "\n"
 
 
 def texts_to_markdown(texts: list[str], followup_texts: list[str], source_path: Path) -> str:
@@ -159,20 +277,33 @@ def texts_to_markdown(texts: list[str], followup_texts: list[str], source_path: 
 
 
 def decode_loop_file(input_path: Path, output_path: Path | None = None) -> Path:
-    """Decode a single .loop file and write a .md file."""
+    """Decode a single .loop file and write a .md file.
+
+    Tries two extraction strategies in order:
+    1. Snapshot segmentTexts (older / simpler Loop files).
+    2. Fluid ops-log (newer Loop files where text lives in the ops stream).
+    """
     if output_path is None:
         output_path = input_path.with_suffix(".md")
 
     data = input_path.read_bytes()
     blocks = decompress_all_gzip_blocks(data)
+
+    # Strategy 1 — snapshot segmentTexts
     texts, followup_texts = extract_text_from_blocks(blocks)
+    if texts or followup_texts:
+        md = texts_to_markdown(texts, followup_texts, input_path)
+        output_path.write_text(md, encoding="utf-8")
+        return output_path
 
-    if not texts and not followup_texts:
-        raise ValueError(f"No text content found in {input_path}")
+    # Strategy 2 — ops-log fallback
+    entries = extract_text_from_ops_log(blocks)
+    if entries:
+        md = ops_log_to_markdown(entries, input_path)
+        output_path.write_text(md, encoding="utf-8")
+        return output_path
 
-    md = texts_to_markdown(texts, followup_texts, input_path)
-    output_path.write_text(md, encoding="utf-8")
-    return output_path
+    raise ValueError(f"No text content found in {input_path}")
 
 
 def main():
