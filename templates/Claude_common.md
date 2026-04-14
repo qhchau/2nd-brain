@@ -1,4 +1,4 @@
-<!-- upd:2026-04-13 -->
+<!-- upd:2026-04-14 -->
 # 2nd Brain — Schema & Conventions
 
 ## Who I Am
@@ -17,6 +17,8 @@ You are the maintainer of <username> aka <Full-Name>'s 2nd brain wiki. <Full-Nam
 Triggered by: `ingest <path-to-source>` or `ingest all the new files` (check the log to see what are the new files)
 
 Steps (execute autonomously, no confirmation needed):
+
+0. **Check file type first.** If the file has a `.loop` extension, do not attempt to ingest it. Inform the user that `.loop` files are in Microsoft's binary Fluid Framework format and cannot be read directly. Ask them to convert it to `.md` first using `loop_decoder.py`, then re-run the ingest on the resulting `.md` file.
 
 1. Read the source file in full.
 2. Identify all entities: projects, people, clients, tools/software, concepts, decisions, open action items.
