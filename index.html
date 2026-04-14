@@ -745,7 +745,7 @@
     <!-- ── A: 2ND BRAIN COMMANDS & TIPS ── -->
     <div class="sub-tab-pane active" id="subTab0">
 
-      <div class="sub-section-label">INGEST COMMANDS</div>
+      <div class="sub-section-label">INGEST COMMANDS EXAMPLES</div>
       <div class="cmd-table">
         <div class="cmd-table-row">
           <span class="cmd-table-text">ingest what's new in the raw folder</span>
@@ -761,7 +761,20 @@
         </div>
       </div>
 
-      <div class="sub-section-label">LINT COMMAND</div>
+      <div class="after-note" style="border-color:rgba(200,130,0,0.25);background:rgba(200,130,0,0.04);margin-bottom:28px;">
+        <div class="after-note-text" style="font-size:13px;">
+          <span style="color:#c88200;">&#9888; INGEST TIPS</span>
+          <ul style="margin:10px 0 0 0;padding-left:18px;line-height:1.8;">
+            <li><strong style="color:#c88200;">Rule of thumb:</strong> If you're not willing to read a document from start to finish, it's probably not worth ingesting everything. For large materials, only ingest the parts relevant to your workflow.</li>
+            <li>You can instruct the AI to ingest only the sections relevant to your job function.</li>
+            <li>The more you ingest blindly, the longer it takes the AI to locate information — which increases the chance of hallucination.</li>
+            <li>For large files such as engineering templates, gate reviews, or Gantt charts, consider ingesting the same file multiple times — each pass focused on a different entity type: <span style="color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:12px;">project &nbsp;|&nbsp; person &nbsp;|&nbsp; client &nbsp;|&nbsp; vendor &nbsp;|&nbsp; concept &nbsp;|&nbsp; decision &nbsp;|&nbsp; tool &nbsp;|&nbsp; event</span></li>
+            <li>After a large ingest, run a lint to ensure all newly created pages are properly cross-linked to related projects, people, and decisions in the wiki.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sub-section-label">LINT COMMAND EXAMPLE</div>
       <div class="cmd-table">
         <div class="cmd-table-row">
           <span class="cmd-table-text" style="color:var(--teal);">lint the wiki to clean up</span>
