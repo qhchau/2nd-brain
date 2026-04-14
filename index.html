@@ -492,6 +492,39 @@
     .cli-tip-body code { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); background: rgba(0,109,168,0.08); padding: 1px 5px; border-radius: 2px; }
     .cli-tip-snippet { background: var(--bg); border: 1px solid var(--border); border-radius: 2px; padding: 12px 16px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gray); line-height: 1.75; white-space: pre-wrap; word-break: break-word; margin-bottom: 12px; }
     .cli-tip-snippet .snip-uname { color: var(--cyan); }
+
+    /* ── SUB-TABS (tab2 inner nav) ── */
+    .uname-ctx { background: var(--surface); border: 1px solid var(--teal); border-radius: 2px; padding: 14px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .uname-ctx-lbl { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2.5px; color: var(--teal); text-transform: uppercase; flex-shrink: 0; }
+    .sub-tab-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .sub-tab-btn { background: none; border: 1px solid rgba(0,109,168,0.35); border-radius: 2px; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: rgba(0,0,0,0.35); letter-spacing: 2px; text-transform: uppercase; cursor: pointer; padding: 6px 14px; transition: all 0.18s; white-space: nowrap; }
+    .sub-tab-btn:hover { color: var(--cyan); border-color: rgba(0,109,168,0.6); }
+    .sub-tab-btn.active { color: var(--cyan); border-color: var(--cyan); background: rgba(0,109,168,0.06); }
+    .sub-tab-pane { display: none; }
+    .sub-tab-pane.active { display: block; }
+    .sub-section-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--gray); text-transform: uppercase; margin-bottom: 10px; margin-top: 24px; }
+    .sub-section-label:first-child { margin-top: 0; }
+    .cmd-table { width: 100%; border: 1px solid var(--border); border-radius: 2px; border-collapse: collapse; margin-bottom: 4px; }
+    .cmd-table-row { display: flex; align-items: stretch; border-bottom: 1px solid var(--border); }
+    .cmd-table-row:last-child { border-bottom: none; }
+    .cmd-table-text { flex: 1; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--gray); padding: 11px 16px; line-height: 1.5; }
+    .cmd-table-btn { flex-shrink: 0; background: none; border: none; border-left: 1px solid var(--border); font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: rgba(0,0,0,0.3); padding: 0 18px; cursor: pointer; transition: color 0.15s, background 0.15s; text-transform: uppercase; }
+    .cmd-table-btn:hover { color: var(--cyan); background: rgba(0,174,239,0.04); }
+    .cmd-table-btn.copied { color: var(--teal) !important; }
+    .query-tips-box { background: var(--bg); border: 1px solid var(--border); border-radius: 2px; padding: 14px 18px; }
+    .query-tip-item { font-family: 'Rajdhani', sans-serif; font-size: 15px; color: var(--gray); line-height: 1.5; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .query-tip-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .query-tip-item::before { content: '›'; color: var(--cyan); margin-right: 10px; font-family: 'Share Tech Mono', monospace; }
+    .info-card { background: var(--bg); border: 1px solid var(--border); border-radius: 2px; padding: 18px 20px; margin-bottom: 20px; }
+    .info-card-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--teal); text-transform: uppercase; margin-bottom: 10px; }
+    .info-card-steps { list-style: none; padding: 0; margin: 0; }
+    .info-card-steps li { font-family: 'Rajdhani', sans-serif; font-size: 15px; color: var(--gray); padding: 5px 0; display: flex; gap: 12px; }
+    .info-card-steps li::before { content: attr(data-n); color: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size: 11px; flex-shrink: 0; padding-top: 1px; min-width: 18px; }
+    .info-card-note { font-family: 'Rajdhani', sans-serif; font-size: 13px; color: rgba(0,0,0,0.3); margin-top: 10px; }
+    .script-block { background: var(--bg); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+    .script-block-hdr { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.03); }
+    .script-block-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; }
+    .script-block-body { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gray); padding: 12px 16px; line-height: 1.75; white-space: pre; overflow-x: auto; }
   </style>
 </head>
 <body>
@@ -686,135 +719,162 @@
 
   </div>
 
-  <!-- ═══════════════════════════ TAB 2: DAILY COMMANDS ═══════════════════════════ -->
+  <!-- ═══════════════════════════ TAB 2: HELPFUL TIPS ═══════════════════════════ -->
   <div class="tab-pane" id="tab2">
 
-    <!-- STEP 01 -->
-    <div class="step-row">
-      <div class="step-spine">
-        <div class="step-circle">01</div>
-        <div class="spine-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-tag">STEP 01 / SETUP</div>
-        <h2 class="step-title">ENTER YOUR <em>PASA USERNAME</em></h2>
-        <p class="step-desc">Type your username once. All paths and commands on this page will update automatically.</p>
-        <div class="input-group">
-          <div class="input-label">PASA USERNAME</div>
-          <input type="text" id="usernameInput" class="pasa-input" placeholder="e.g. jsmith" oninput="onUsernameChange(this.value)" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="path-box">
-          <span class="path-box-label">YOUR PATH</span>
-          <span class="path-text">C:\Users\<span class="uname dim" data-role="uname">&lt;username&gt;</span>\OneDrive - Panasonic Automotive Systems\2nd-brain\raw</span>
-        </div>
+    <!-- Username context bar -->
+    <div class="uname-ctx">
+      <span class="uname-ctx-lbl">PASA USERNAME</span>
+      <input type="text" id="usernameInput" class="pasa-input" placeholder="e.g. jsmith"
+             oninput="onUsernameChange(this.value)" autocomplete="off" spellcheck="false"
+             style="width:180px;font-size:14px;padding:8px 14px;">
+      <div class="path-box" style="flex:1;margin-top:0;">
+        <span class="path-box-label">PATH</span>
+        <span class="path-text">C:\Users\<span class="uname dim" data-role="uname">&lt;username&gt;</span>\OneDrive - Panasonic Automotive Systems\2nd-brain\raw</span>
       </div>
     </div>
 
-    <!-- STEP 02 -->
-    <div class="step-row">
-      <div class="step-spine">
-        <div class="step-circle">02</div>
-        <div class="spine-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-tag">STEP 02 / MORNING</div>
-        <h2 class="step-title">GATHER BRIEF WITH <em>COPILOT</em></h2>
-        <p class="step-desc">Run this prompt in Microsoft 365 Copilot to scan your Teams and Outlook messages.</p>
-
-        <div class="prompt-grid">
-          <!-- Prompt: Daily Scan (Teams + Outlook merged) -->
-          <div class="prompt-card">
-            <div class="prompt-header">
-              <div class="prompt-header-left">
-                <span class="prompt-badge teams">TEAMS + OUTLOOK</span>
-                <span class="prompt-title">DAILY SCAN</span>
-              </div>
-              <button class="copy-btn" id="copyBtnDaily" onclick="copyDailyPrompt()">COPY PROMPT</button>
-            </div>
-            <pre class="prompt-body" id="promptDailyDisplay"></pre>
-            <div class="screenshot-placeholder">
-              <div class="ss-icon-wrap"><div class="ss-icon"></div></div>
-              <div class="ss-label">INSERT SCREENSHOT HERE</div>
-              <div class="ss-note">Show where to paste this prompt in Microsoft 365 Copilot</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Sub-tab nav -->
+    <div class="sub-tab-bar">
+      <button class="sub-tab-btn active" id="subTabBtn0" onclick="switchSubTab(0)">A / 2ND BRAIN TIPS</button>
+      <button class="sub-tab-btn" id="subTabBtn1" onclick="switchSubTab(1)">B / COPILOT EXTRACTION</button>
+      <button class="sub-tab-btn" id="subTabBtn2" onclick="switchSubTab(2)">C / .LOOP → .MD</button>
+      <button class="sub-tab-btn" id="subTabBtn3" onclick="switchSubTab(3)">D / GET FILES INTO RAW</button>
     </div>
 
-    <!-- STEP 03 -->
-    <div class="step-row">
-      <div class="step-spine">
-        <div class="step-circle">03</div>
-        <div class="spine-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-tag">STEP 03 / SAVE</div>
-        <h2 class="step-title">DOWNLOAD TO YOUR <em>2ND BRAIN</em></h2>
-        <p class="step-desc">Save the Copilot output as a <code style="font-family:'Share Tech Mono',monospace;color:var(--cyan);font-size:14px;">.md</code> file into the raw folder. Use the naming convention below.</p>
+    <!-- ── A: 2ND BRAIN COMMANDS & TIPS ── -->
+    <div class="sub-tab-pane active" id="subTab0">
 
-        <div style="margin-bottom:16px;">
-          <div class="cmd-section-label" style="margin-bottom:8px;">SAVE LOCATION</div>
-          <div class="save-path-card">
-            <div class="save-path-with-copy">
-              <span class="save-path-text">C:\Users\<span class="uname dim" data-role="uname">&lt;username&gt;</span>\OneDrive - Panasonic Automotive Systems\2nd-brain\raw</span>
-              <button class="copy-btn" id="copySavePath" onclick="copyPath('copySavePath')">COPY PATH</button>
+      <div class="sub-section-label">INGEST COMMANDS</div>
+      <div class="cmd-table">
+        <div class="cmd-table-row">
+          <span class="cmd-table-text">ingest what's new in the raw folder</span>
+          <button class="cmd-table-btn" id="copyIngestA" onclick="copyTableCmd('copyIngestA', `ingest what's new in the raw folder`)">COPY</button>
+        </div>
+        <div class="cmd-table-row">
+          <span class="cmd-table-text">ingest the latest files</span>
+          <button class="cmd-table-btn" id="copyIngestB" onclick="copyTableCmd('copyIngestB', 'ingest the latest files')">COPY</button>
+        </div>
+        <div class="cmd-table-row">
+          <span class="cmd-table-text">ingest the XXXX.md files and pay attention to structural analysis</span>
+          <button class="cmd-table-btn" id="copyIngestC" onclick="copyTableCmd('copyIngestC', 'ingest the XXXX.md files and pay attention to structural analysis')">COPY</button>
+        </div>
+      </div>
+
+      <div class="sub-section-label">LINT COMMAND</div>
+      <div class="cmd-table">
+        <div class="cmd-table-row">
+          <span class="cmd-table-text" style="color:var(--teal);">lint the wiki to clean up</span>
+          <button class="cmd-table-btn" id="copyLintA" onclick="copyTableCmd('copyLintA', 'lint the wiki to clean up')">COPY</button>
+        </div>
+      </div>
+
+      <div class="sub-section-label">QUERY TIPS</div>
+      <div class="query-tips-box">
+        <div class="query-tip-item">What are my open action items from this week?</div>
+        <div class="query-tip-item">What did we decide about [project name]?</div>
+        <div class="query-tip-item">Summarize what I worked on today.</div>
+        <div class="query-tip-item">Given my work week so far, what are some skills I can delegate or collaborate with AI?</div>
+      </div>
+
+    </div>
+
+    <!-- ── B: COPILOT EXTRACTION ── -->
+    <div class="sub-tab-pane" id="subTab1">
+
+      <div class="prompt-grid">
+        <div class="prompt-card">
+          <div class="prompt-header">
+            <div class="prompt-header-left">
+              <span class="prompt-badge teams">TEAMS + OUTLOOK</span>
+              <span class="prompt-title">DAILY SCAN</span>
             </div>
+            <button class="copy-btn" id="copyBtnDaily" onclick="copyDailyPrompt()">COPY PROMPT</button>
+          </div>
+          <pre class="prompt-body" id="promptDailyDisplay"></pre>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <div class="cmd-section-label" style="margin-bottom:8px;">SAVE LOCATION</div>
+        <div class="save-path-card">
+          <div class="save-path-with-copy">
+            <span class="save-path-text">C:\Users\<span class="uname dim" data-role="uname">&lt;username&gt;</span>\OneDrive - Panasonic Automotive Systems\2nd-brain\raw</span>
+            <button class="copy-btn" id="copySavePath" onclick="copyPath('copySavePath')">COPY PATH</button>
           </div>
         </div>
+      </div>
 
+      <div style="margin-top:16px;">
         <div class="cmd-section-label">FILENAME CONVENTION</div>
         <div class="filename-row">
           <div class="filename-chip" id="fname1">YYYY-MM-DD_&lt;username&gt;_daily-scan.md</div>
         </div>
       </div>
+
     </div>
 
-    <!-- STEP 04 -->
-    <div class="step-row">
-      <div class="step-spine">
-        <div class="step-circle">04</div>
-        <div class="spine-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-tag">STEP 04 / INGEST</div>
-        <h2 class="step-title">LOAD INTO AI &amp; <em>START ASKING</em></h2>
-        <p class="step-desc">Open your AI (PASA AI or Claude Code) from your 2nd-brain folder, then run the ingest command.</p>
+    <!-- ── C: .LOOP → .MD ── -->
+    <div class="sub-tab-pane" id="subTab2">
 
-        <div class="cmd-section-label" style="margin-bottom:8px;">INGEST COMMAND</div>
-        <div class="cmd-row" style="margin-bottom:18px;">
-          <span class="cmd-text">ingest what's new in the raw folder</span>
-          <button class="copy-btn" id="copyIngest" onclick="copyStatic('copyIngest', `ingest what's new in the raw folder`)">COPY</button>
-        </div>
-
-        <div class="after-note">
-          <div class="after-note-text">After ingestion, <strong>ask anything</strong> — project status, action items, decisions, who owns what.</div>
-        </div>
+      <div class="after-note" style="margin-bottom:20px;">
+        <div class="after-note-text"><strong>.loop files</strong> are meeting notes created by Teams Facilitator. They use Microsoft's binary Fluid Framework format — not plain text — so AI tools like Claude Code and PASA AI cannot read them directly. The script below decodes the binary content and converts it to a <code style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);">.md</code> file that AI can ingest. Output filename matches the .loop filename exactly.</div>
       </div>
+
+      <div class="sub-section-label">PYTHON — CONVERTING .LOOP TO .MD</div>
+      <div style="margin-bottom:24px;">
+        <button class="copy-claude-btn" id="dlLoopBtn" onclick="downloadLoopDecoder()">DOWNLOAD loop_decoder.py</button>
+      </div>
+
+      <div class="sub-section-label">OPTION 1 — RUN THE SCRIPT YOURSELF</div>
+      <div class="script-block" style="margin-bottom:20px;">
+        <div class="script-block-hdr">
+          <span class="script-block-label">TERMINAL / POWERSHELL</span>
+          <button class="copy-btn" id="copyLoopCmd" onclick="copyTableCmd('copyLoopCmd', 'python3 loop_decoder.py &quot;your-file.loop&quot;')">COPY</button>
+        </div>
+        <div class="script-block-body">python3 loop_decoder.py "your-file.loop"
+# outputs: your-file.md  (same folder, same name)</div>
+      </div>
+
+      <div class="sub-section-label">OPTION 2 — ASK CLAUDE CODE OR PASA AI</div>
+      <div class="script-block">
+        <div class="script-block-hdr">
+          <span class="script-block-label">PROMPT</span>
+          <button class="copy-btn" id="copyLoopAi" onclick="copyTableCmd('copyLoopAi', 'Run loop_decoder.py on raw/&lt;filename&gt;.loop and save the output to raw/')">COPY</button>
+        </div>
+        <div class="script-block-body">Run loop_decoder.py on raw/&lt;filename&gt;.loop and save the output to raw/
+# The script is in your 2nd-brain root folder</div>
+      </div>
+
     </div>
 
-    <!-- STEP 05 -->
-    <div class="step-row last-step">
-      <div class="step-spine">
-        <div class="step-circle">05</div>
-        <div class="spine-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-tag">STEP 05 / END OF DAY</div>
-        <h2 class="step-title">CLEAN UP THE <em>WIKI</em></h2>
-        <p class="step-desc">Before you close, run the lint command in PASA AI or Claude Code. It keeps the wiki tidy and accurate.</p>
+    <!-- ── D: GET FILES INTO RAW/ ── -->
+    <div class="sub-tab-pane" id="subTab3">
 
-        <div class="cmd-section-label">RUN IN PASA AI OR CLAUDE CODE</div>
-        <div class="cmd-row" style="border-color:rgba(0,170,128,0.2);margin-bottom:14px;">
-          <span class="cmd-text" style="color:var(--teal);font-size:14px;">lint the wiki to clean up</span>
-          <button class="copy-btn" id="copyLintEod" onclick="copyStatic('copyLintEod', 'lint the wiki to clean up')">COPY</button>
-        </div>
-
-        <div class="eod-note">
-          <div class="eod-note-label">WHAT THIS DOES</div>
-          <div class="eod-note-text">Fixes broken cross-links &nbsp;·&nbsp; Removes duplicate entries &nbsp;·&nbsp; Tidies page formatting &nbsp;·&nbsp; Rebuilds the master index</div>
-        </div>
+      <div class="info-card">
+        <div class="info-card-label">EMAIL ATTACHMENTS</div>
+        <ol class="info-card-steps">
+          <li data-n="01">Open the email in Outlook</li>
+          <li data-n="02">Right-click the attachment → Download / Save As</li>
+          <li data-n="03">Move or copy the file to <code style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);">2nd-brain\raw</code></li>
+        </ol>
       </div>
+
+      <div class="info-card">
+        <div class="info-card-label">LOOP FILES — FROM TEAMS FACILITATOR</div>
+        <ol class="info-card-steps">
+          <li data-n="01">In Teams, open the meeting chat</li>
+          <li data-n="02">Find the Loop note → click <strong>···</strong> → Export → Download as .loop</li>
+          <li data-n="03">Move the .loop file to <code style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan);">2nd-brain\raw</code></li>
+          <li data-n="04">Then go to tab C to convert it to .md</li>
+        </ol>
+      </div>
+
+      <div class="eod-note" style="margin-top:4px;">
+        <div class="eod-note-label">VERIFY SYNC</div>
+        <div class="eod-note-text">Green checkmark on <code style="font-family:'Share Tech Mono',monospace;font-size:11px;">raw\</code> in File Explorer = fully synced and ready to ingest</div>
+      </div>
+
     </div>
 
   </div>
@@ -1463,6 +1523,46 @@ function generatePackage() {
 function switchTab(n) {
   document.querySelectorAll('.tab-pane').forEach((p, i) => p.classList.toggle('active', i === n));
   document.querySelectorAll('.tab-btn').forEach((b, i)  => b.classList.toggle('active', i === n));
+}
+
+function switchSubTab(idx) {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('subTabBtn' + i).classList.toggle('active', i === idx);
+    document.getElementById('subTab'    + i).classList.toggle('active', i === idx);
+  }
+}
+
+function copyTableCmd(btnId, text) {
+  doCopy(text, btnId);
+}
+
+async function downloadLoopDecoder() {
+  const btn  = document.getElementById('dlLoopBtn');
+  const orig = btn.textContent;
+  btn.textContent = 'DOWNLOADING...';
+  btn.disabled    = true;
+
+  const triggerDownload = (url, isBlob) => {
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'loop_decoder.py';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    if (isBlob) URL.revokeObjectURL(url);
+  };
+
+  try {
+    const resp = await fetch('loop_decoder.py');
+    if (!resp.ok) throw new Error('fetch failed');
+    const blob = await resp.blob();
+    triggerDownload(URL.createObjectURL(new Blob([blob], { type: 'text/x-python' })), true);
+  } catch {
+    // Fallback: direct link — works when opening from the package folder
+    triggerDownload('loop_decoder.py', false);
+  }
+
+  setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1500);
 }
 
 // ── CURSOR ─────────────────────────────────────────────────────
