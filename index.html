@@ -1128,7 +1128,7 @@ Triggered by: \`lint the wiki\` or any similar trigger, confirm with user before
    - Orphan pages with no inbound links from other wiki pages
    - Concepts mentioned inline but lacking their own dedicated page
    - Missing cross-links between obviously related pages
-   - **Log coverage:** any wiki page whose \`source_count > 0\` should correspond to at least one log entry in \`<WIKI_LOG>\`. Flag pages where no matching log entry exists (indicates an ingest happened without logging).
+   - **Log coverage:** any wiki page whose frontmatter \`sources\` list is non-empty should correspond to at least one log entry in \`<WIKI_LOG>\`. Flag pages where no matching log entry exists (indicates an ingest happened without logging).
    - **Stale IN PROGRESS entries:** any log entry still marked \`— IN PROGRESS\` indicates an interrupted ingest. Flag these for review.
 3. Report findings as a numbered list with specific page references.
 4. Ask <Full-Name> before making any changes.
@@ -1181,16 +1181,16 @@ When a new source contradicts existing content on a page, add inline:
 
 Each entry:
 \`\`\`markdown
-- [Page Title](path/to/page.md) — one-line summary | tags: tag1, tag2 | sources: N
+- [Page Title](path/to/page.md) — one-line summary | tags: tag1, tag2 | sources: filename1.md, filename2.md
 \`\`\`
 
 Example:
 \`\`\`markdown
 ## Projects
-- [Nissan SubAmp Thermal Simulation](nissan-subamp-project.md) — thermal model for SubAmp assembly | tags: nissan, thermal, ansys | sources: 2
+- [Nissan SubAmp Thermal Simulation](nissan-subamp-project.md) — thermal model for SubAmp assembly | tags: nissan, thermal, ansys | sources: raw/2026-04-01_daily-scan.md, raw/meeting-2026-04-05.md
 
 ## People
-- [Ross Hanson](ross-hanson.md) — thermal simulation colleague | tags: colleague | sources: 3
+- [Ross Hanson](ross-hanson.md) — thermal simulation colleague | tags: colleague | sources: raw/2026-04-01_daily-scan.md, raw/meeting-2026-04-05.md, raw/email-scan.md
 \`\`\`
 
 ---
