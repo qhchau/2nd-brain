@@ -483,6 +483,11 @@
     .setup-step-img { width: 100%; border-radius: 4px; border: 1px solid var(--border); margin-top: 10px; display: block; }
     .setup-step-desc code { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); background: rgba(0,109,168,0.08); padding: 1px 5px; border-radius: 2px; }
     .setup-step-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .setup-substeps { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .setup-substep { display: flex; gap: 10px; align-items: flex-start; }
+    .setup-substep-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); opacity: 0.7; min-width: 20px; padding-top: 1px; flex-shrink: 0; }
+    .setup-substep-text { font-size: 12px; color: var(--gray); line-height: 1.5; }
+    .setup-substep-text strong { color: var(--text); }
     .copy-claude-btn { font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 2px; border: 1px solid var(--teal); background: transparent; color: var(--teal); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
     .copy-claude-btn:hover { background: rgba(0,120,90,0.1); }
     .cli-tip { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 18px; }
@@ -987,6 +992,30 @@
             </div>
             <div class="setup-step-desc">Click the <strong>CLAUDE.md</strong> tab → paste the contents → click <strong>Save CLAUDE.md</strong>.</div>
             <img class="setup-step-img" src="assets/pasa-setup-step2-claude-md.png" alt="PASA AI — CLAUDE.md tab in Library">
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="setup-step-num">03</div>
+          <div class="setup-step-body">
+            <div class="setup-step-title">Mount your 2nd-brain folder</div>
+            <div class="setup-step-desc">Give PASA AI direct access to your local files by mounting the <strong>2nd-brain</strong> folder for the session.</div>
+            <div class="setup-substeps">
+              <div class="setup-substep">
+                <span class="setup-substep-label">3A</span>
+                <span class="setup-substep-text">In PASA AI, click <strong>Files &amp; Folder</strong> in the bottom toolbar of the chat window.</span>
+              </div>
+              <img class="setup-step-img" src="assets/pasa-setup-step3a-files-folder.png" alt="PASA AI — Files &amp; Folder button in toolbar">
+              <div class="setup-substep">
+                <span class="setup-substep-label">3B</span>
+                <span class="setup-substep-text">In the Session Files panel, click the <strong>Local Mount (Beta)</strong> tab → click <strong>Mount a Folder</strong>.</span>
+              </div>
+              <img class="setup-step-img" src="assets/pasa-setup-step3b-local-mount.png" alt="PASA AI — Local Mount tab and Mount a Folder button">
+              <div class="setup-substep">
+                <span class="setup-substep-label">3C</span>
+                <span class="setup-substep-text">Navigate to <strong>OneDrive — Harry - Panasonic Automotive Systems</strong> → select the <strong>2nd-brain</strong> folder → click <strong>Select Folder</strong>.</span>
+              </div>
+              <img class="setup-step-img" src="assets/pasa-setup-step3c-select-folder.png" alt="Windows file picker — selecting 2nd-brain folder">
+            </div>
           </div>
         </div>
       </div>
